@@ -1,8 +1,11 @@
 module Main exposing (..)
 
+import Bootstrap.CDN as CDN
+import Bootstrap.Grid as Grid
 import Browser
-import Html exposing (Html, text, div, h1, img)
+import Html exposing (Html, div, h1, img, text)
 import Html.Attributes exposing (src)
+
 
 
 ---- MODEL ----
@@ -36,9 +39,14 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    div []
-        [ img [ src "/logo.svg" ] []
-        , h1 [] [ text "Your Elm App is working!" ]
+    Grid.container []
+        [ CDN.stylesheet -- creates an inline style node with the Bootstrap CSS
+        , Grid.row []
+            [ Grid.col []
+                [ h1 [] [ text "Some content for my view here..." ]
+                , div [] [ text "bla bla bla" ]
+                ]
+            ]
         ]
 
 
