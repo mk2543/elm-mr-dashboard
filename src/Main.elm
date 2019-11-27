@@ -1,31 +1,19 @@
 module Main exposing (..)
 
-import Bootstrap.CDN as CDN
-import Bootstrap.Grid as Grid
 import Browser
-import Html exposing (Html, div, h1, img, text)
-import Html.Attributes exposing (src)
+import View.Layout exposing(view)
+import Model.Model exposing(Model, Msg)
 
 
 
 ---- MODEL ----
 
 
-type alias Model =
-    {}
-
-
 init : ( Model, Cmd Msg )
 init =
     ( {}, Cmd.none )
 
-
-
 ---- UPDATE ----
-
-
-type Msg
-    = NoOp
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -36,18 +24,6 @@ update msg model =
 
 ---- VIEW ----
 
-
-view : Model -> Html Msg
-view model =
-    Grid.container []
-        [ CDN.stylesheet -- creates an inline style node with the Bootstrap CSS
-        , Grid.row []
-            [ Grid.col []
-                [ h1 [] [ text "Some content for my view here..." ]
-                , div [] [ text "bla bla bla" ]
-                ]
-            ]
-        ]
 
 
 
