@@ -5,13 +5,16 @@ import View.Layout exposing(view)
 import Model.Model exposing(Model, Msg)
 
 
-
 ---- MODEL ----
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( {}, Cmd.none )
+   let 
+       mr1 = {id = "123", name = "Merge Request 1"} 
+       mr2 = {id = "456", name = "Merge Request 2"}
+       initialModel = {gitlabUrl = "TODO", mergeRequests = [mr1, mr2]}
+    in ( initialModel, Cmd.none )
 
 ---- UPDATE ----
 
