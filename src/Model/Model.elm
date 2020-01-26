@@ -20,8 +20,6 @@ type alias MergeRequest =
     , author: String
     , openSince: String
     , approvals: Int
-    , approvedByMe: Bool
-    , isWip: Bool
     , pipelinePassed: PipelineStatus
     , changedFiles: Int
   }
@@ -32,8 +30,16 @@ type alias Filters = {
     , wipsVisible: Bool
   }  
 
-type FilterMessages = HideApprovedMrs | ShowApprovedMrs | HideFailedPipelines 
-  | ShowFailedPipelines | HideWips | ShowWips | ClearFilters
+type Msg = ToggleApprovedMrs | ToggleFailedPipelines | ToggleWips 
 
-type Msg
-    = Merge MrId | FilterMessages    
+updateToggles: Msg -> Filters -> Filters
+updateToggles msg filters = 
+    case msg of
+        ToggleApprovedMrs -> { filters | approvedMrsVisible = not filters.approvedMrsVisible }
+        ToggleFailedPipelines -> { filters | failedPipelinesVisible = not filters.failedPipelinesVisible }   
+        ToggleWips -> { filters | wipsVisible = not filters.wipsVisible }
+
+
+update : Msg -> Model -> ( Model, Cmd Msg )
+update msg model =
+    ( { model | filters = updateToggles msg model.filters }, Cmd.none )
