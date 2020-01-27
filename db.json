@@ -1,0 +1,44 @@
+{
+  "merge-requests": [
+    {
+      "id": "123",
+      "name": "Merge Request 1",
+      "appType": "Frontend",
+      "author": "Scarlett Johansson",
+      "openSince": "2019-11-13 14:34:33Z",
+      "approvals": 2,
+      "pipelinePassed": "Passed",
+      "changedFiles": 30
+    },
+    {
+      "id": "456",
+      "name": "Merge Request 2",
+      "appType": "Frontend",
+      "author": "Chris Evans",
+      "openSince": "2019-11-15 09:43:12Z",
+      "approvals": 1,
+      "pipelinePassed": "Passed",
+      "changedFiles": 12
+    },
+    {
+      "id": "456",
+      "name": "WIP: Merge Request 3",
+      "appType": "Frontend",
+      "author": "Chris Evans",
+      "openSince": "2019-11-10 10:02:13Z",
+      "approvals": 1,
+      "pipelinePassed": "Failed",
+      "changedFiles": 4
+    },
+    {
+      "id": "456",
+      "name": "WIP: Merge Request 4",
+      "appType": "Frontend",
+      "author": "Robert Downey Jr.",
+      "openSince": "2019-11-15 08:06:56Z",
+      "approvals": 1,
+      "pipelinePassed": "Warning",
+      "changedFiles": 4
+    }
+  ]
+}
