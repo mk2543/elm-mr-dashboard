@@ -44,11 +44,20 @@ updateToggles msg filters =
         _ -> filters
 
 
+updateMergeRequests: Result Http.Error (List MergeRequest) -> Model -> Model 
+updateMergeRequests msg oldModel = 
+    case msg of
+        Ok newMergeRequests -> {oldModel | mergeRequests = newMergeRequests}
+        _ -> oldModel
+            
+
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of 
         GetMergeRequests -> ( model, getMergeRequests )
+        MergeRequestsRetrieved result -> (updateMergeRequests result model, Cmd.none)
         _ -> ( { model | filters = updateToggles msg model.filters }, Cmd.none )
+
 
 getMergeRequests: Cmd Msg
 getMergeRequests =
