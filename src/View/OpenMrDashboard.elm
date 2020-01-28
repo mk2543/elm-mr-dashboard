@@ -2,8 +2,9 @@ module View.OpenMrDashboard exposing(dashboard)
 
 import View.MrRow exposing (mrRow)
 import View.FiltersPanel exposing (filtersPanel)
-import Html exposing (Html, div)
+import Html exposing (Html, div, button, text)
 import Html.Attributes exposing(class)
+import Html.Events exposing (onClick)
 import Model.Model exposing (..)
 import List exposing (map)
 import String exposing(startsWith)
@@ -40,7 +41,10 @@ dashboard model =
     let filteredMrs = filterMrs model.mergeRequests model.filters
     in 
         div [] [
-            filtersPanel model.filters
+            div [ class "m-2 p-3"] [
+                button [ class "btn btn-primary", onClick GetMergeRequests] [text "Refresh"]
+            ]
+            , filtersPanel model.filters
             , div [ class "d-flex flex-wrap"] (map mrRow filteredMrs) 
         ]
 
