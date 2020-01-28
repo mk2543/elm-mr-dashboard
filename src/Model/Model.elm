@@ -1,6 +1,6 @@
 module Model.Model exposing(..)
 import Http
-import Json.Decode exposing (Decoder, field, string)
+import Json.Decode exposing (Decoder, succeed, fail, map8, field, string, int, andThen, list)
 
 
 type alias Model =
@@ -33,7 +33,7 @@ type alias Filters = {
     , wipsVisible: Bool
   }  
 
-type Msg = ToggleApprovedMrs | ToggleFailedPipelines | ToggleWips | GetMergeRequests | MergeRequestsRetrieved (Result Http.Error String)
+type Msg = ToggleApprovedMrs | ToggleFailedPipelines | ToggleWips | GetMergeRequests | MergeRequestsRetrieved (Result Http.Error (List MergeRequest))
 
 updateToggles: Msg -> Filters -> Filters
 updateToggles msg filters = 
@@ -53,10 +53,36 @@ update msg model =
 getMergeRequests: Cmd Msg
 getMergeRequests =
     Http.get { url = "https://my-json-server.typicode.com/mk2543/elm-mr-dashboard/merge-requests"
-    , expect= Http.expectJson MergeRequestsRetrieved mrDecoder
+    , expect= Http.expectJson MergeRequestsRetrieved mergeRequestsDecoder
     }
 
 
-mrDecoder : Decoder String
-mrDecoder =
-  field "data" (field "image_url" string)
+mergeRequestsDecoder: Decoder (List MergeRequest)
+mergeRequestsDecoder = list singleMergeRequestDecoder
+
+singleMergeRequestDecoder : Decoder MergeRequest
+singleMergeRequestDecoder =
+  map8 MergeRequest
+        (field "id" string)
+        (field "appType" string |> andThen appTypeDecoder)
+        (field "name" string) 
+        (field "author" string) 
+        (field "openSince" string) 
+        (field "approvals" int) 
+        (field "pipelinePassed" string |> andThen pipelineStatusDecoder)
+        (field "changedFiles" int) 
+        
+appTypeDecoder : String -> Decoder App
+appTypeDecoder string =
+    case string of
+        "Frontend" -> succeed Frontend
+        "Backend" -> succeed Backend
+        _ -> fail <| "Invalid pipeline status: " ++ string
+
+pipelineStatusDecoder : String -> Decoder PipelineStatus
+pipelineStatusDecoder string =
+    case string of
+        "Passed" -> succeed Passed
+        "Warning" -> succeed Warning
+        "Failed" -> succeed Failed
+        _ -> fail <| "Invalid pipeline status: " ++ string
